@@ -37,17 +37,27 @@ export interface UseCalculatorStateReturn {
  * Utiliza computação derivada puramente via useMemo para evitar renderizações duplicadas.
  */
 export function useCalculatorState(): UseCalculatorStateReturn {
-  const [state, setState] = useState<CalculatorState>(() => loadProjectFromStorage());
+  const [state, setState] = useState<CalculatorState>(INITIAL_STATE);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Carrega do LocalStorage apenas após montar no cliente (evita Hydration Mismatch em SSR)
+  useEffect(() => {
+    const saved = loadProjectFromStorage();
+    setState(saved);
+    setIsHydrated(true);
+  }, []);
 
   // Cálculo de resultados derivado instantaneamente via useMemo (evita double-render)
   const results = useMemo(() => calculatePricing(state), [state]);
 
   const isKitMode = state.productionMode === 'kit';
 
-  // Persistência automática no LocalStorage
+  // Persistência automática no LocalStorage apenas após o carregamento inicial
   useEffect(() => {
-    saveProjectToStorage(state);
-  }, [state]);
+    if (isHydrated) {
+      saveProjectToStorage(state);
+    }
+  }, [state, isHydrated]);
 
   const setProductionMode = useCallback((mode: ProductionMode) => {
     setState((prev) => ({
