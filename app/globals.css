@@ -1,26 +1,154 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg-page: #EAECEF;
+    --card-surface: #FFFFFF;
+    --card-surface-elevated: #F6F7F9;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --card-border-focus: #0071E3;
+    --text-primary: #1D1D1F;
+    --text-secondary: #48484A;
+    --text-muted: #86868B;
+    --input-surface: #F5F5F7;
+    --input-border: #D2D2D7;
+    --header-surface: rgba(255, 255, 255, 0.85);
+  }
+
+  .dark {
+    --bg-page: #0B0D13;
+    --card-surface: #141721;
+    --card-surface-elevated: #1B202D;
+    --card-border: rgba(255, 255, 255, 0.09);
+    --card-border-focus: #2997FF;
+    --text-primary: #F5F5F7;
+    --text-secondary: #D1D5DB;
+    --text-muted: #9CA3AF;
+    --input-surface: #1B202D;
+    --input-border: rgba(255, 255, 255, 0.14);
+    --header-surface: rgba(18, 22, 32, 0.88);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  letter-spacing: -0.014em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Background Atmosphere */
+.studio-background {
+  background-color: #EAECEF;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.08), transparent 75%),
+    linear-gradient(180deg, #EDEFF3 0%, #E3E6EB 100%);
+  background-attachment: fixed;
+}
+
+.dark .studio-background {
+  background-color: #0A0C11;
+  background-image: 
+    radial-gradient(ellipse 80% 55% at 50% -10%, rgba(0, 113, 227, 0.18), transparent 70%),
+    radial-gradient(circle at 90% 20%, rgba(130, 80, 250, 0.06), transparent 50%),
+    linear-gradient(180deg, #0A0C11 0%, #0E1017 100%);
+  background-attachment: fixed;
+}
+
+/* Card aesthetics */
+.pro-card {
+  background-color: var(--card-surface);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+}
+
+.dark .pro-card {
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 130, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 130, 0.45);
+}
+
+/* Print Optimization: High-fidelity A4 proposal output without UI chrome */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1D1D1F !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide app header, modals backdrop, buttons, and tools */
+  header,
+  footer,
+  nav,
+  button,
+  .studio-background {
+    background: transparent !important;
+    background-image: none !important;
+  }
+
+  /* Hide modal overlay UI and show only single-print-root */
+  body * {
+    visibility: hidden;
+  }
+
+  #single-print-root,
+  #single-print-root * {
+    visibility: visible !important;
+  }
+
+  #single-print-root {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    z-index: 999999 !important;
+    display: block !important;
+  }
+
+  #pdf-quote-content {
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    color-scheme: light !important;
+  }
+}
+
