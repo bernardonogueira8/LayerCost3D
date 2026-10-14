@@ -17,25 +17,32 @@ export const TimeEnergySection: React.FC<TimeEnergySectionProps> = ({
   isKitMode,
   onUpdateTimeEnergy,
 }) => {
+  const totalHours = timeEnergy.printTimeHours + timeEnergy.printTimeMinutes / 60;
+  const totalKwh = ((totalHours * timeEnergy.avgPowerWatts) / 1000).toFixed(2);
+  const calculatedEnergyCost = (Number(totalKwh) * timeEnergy.energyCostKwh).toFixed(2);
+
   return (
-    <section className="bg-white dark:bg-[#141721] rounded-[24px] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.36)] border border-slate-200/90 dark:border-white/[0.08] flex flex-col justify-between transition-colors">
+    <section className="bg-white dark:bg-[#1C1C1E] rounded-[22px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] border border-black/[0.06] dark:border-white/[0.08] hover:border-black/[0.1] dark:hover:border-white/[0.14] hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus-within:border-[#FF9500]/40 focus-within:shadow-[0_8px_30px_rgba(255,149,0,0.06)] transition-all duration-300">
       <div>
         {/* Card Header */}
-        <div className="flex items-center justify-between mb-5 border-b border-slate-100 dark:border-white/[0.06] pb-4">
-          <div className="flex items-center gap-3">
-            <span className="w-9 h-9 rounded-xl bg-[#FF9500]/10 dark:bg-[#FF9500]/20 text-[#FF9500] flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5" />
+        <div className="flex items-center justify-between mb-3.5 border-b border-black/[0.05] dark:border-white/[0.06] pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-[#FF9500]/10 text-[#FF9500] flex items-center justify-center shrink-0">
+              <Zap className="w-3.5 h-3.5" />
             </span>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-[16px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
                 Tempo e Energia
               </h2>
             </div>
           </div>
+          <span className="text-[11px] font-medium text-[#86868B] bg-[#F5F5F7] dark:bg-[#2C2C2E] px-2.5 py-0.5 rounded-full border border-black/[0.04] dark:border-white/[0.06] transition-colors">
+            {totalKwh} kWh (~R$ {calculatedEnergyCost})
+          </span>
         </div>
 
         {/* 4 Inputs */}
-        <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
+        <div className="grid grid-cols-2 gap-2.5">
           <InputField
             label={isKitMode ? 'Tempo Fornada (H)' : 'Tempo Impressão (H)'}
             value={timeEnergy.printTimeHours}
@@ -71,13 +78,13 @@ export const TimeEnergySection: React.FC<TimeEnergySectionProps> = ({
       </div>
 
       {/* Card Footer Summary */}
-      <div className="mt-5 pt-4 border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
-        <span className="font-medium">
+      <div className="mt-3.5 pt-3 border-t border-black/[0.05] dark:border-white/[0.06] flex items-center justify-between text-[12px] sm:text-[13px] text-[#86868B]">
+        <span>
           {isKitMode
-            ? `Energia/Deprec. p/ peça (~${results.effectiveUnitPrintTimeFormatted}):`
+            ? `Energia/Deprec. (~${results.effectiveUnitPrintTimeFormatted}):`
             : 'Energia + Depreciação:'}
         </span>
-        <span className="font-bold text-slate-900 dark:text-white text-base sm:text-lg tabular-nums">
+        <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">
           {formatBRL(results.unitEnergyDepreciationCost)}
         </span>
       </div>

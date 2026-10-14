@@ -86,13 +86,13 @@ export const InputField: React.FC<InputFieldProps> = ({
     <div className={`flex flex-col gap-1.5 ${className}`}>
       <label
         htmlFor={inputId}
-        className="text-[13px] sm:text-[14px] font-semibold text-slate-700 dark:text-zinc-200 select-none tracking-tight"
+        className="text-[12px] font-medium text-[#1D1D1F]/80 dark:text-[#F5F5F7]/80 select-none tracking-tight"
       >
         {label}
       </label>
       <div className="relative flex items-center">
         {prefix && (
-          <span className="absolute left-4 text-sm font-semibold text-slate-500 dark:text-zinc-400 select-none pointer-events-none">
+          <span className="absolute left-3.5 text-[13px] font-medium text-[#86868B] select-none pointer-events-none">
             {prefix}
           </span>
         )}
@@ -108,16 +108,24 @@ export const InputField: React.FC<InputFieldProps> = ({
           step={step}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full h-11 sm:h-12 px-4 bg-white dark:bg-[#1B202D] border border-slate-300 dark:border-white/10 rounded-xl text-[15px] sm:text-[16px] font-semibold text-slate-900 dark:text-white tabular-nums transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:border-[#0071E3] dark:focus:border-[#2997FF] focus:ring-4 focus:ring-[#0071E3]/15 dark:focus:ring-[#2997FF]/20 focus:outline-none ${
-            prefix ? 'pl-9' : ''
-          } ${suffix ? 'pr-14' : ''} ${
+          className={`w-full h-11 px-3.5 bg-[#F5F5F7] dark:bg-[#2C2C2E] border border-[#D2D2D7] dark:border-[#38383A] rounded-xl text-[14px] font-medium text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums transition-all duration-200 placeholder:text-[#86868B] focus:bg-white dark:focus:bg-[#1C1C1E] focus:border-[#0071E3] dark:focus:border-[#2997FF] focus:ring-4 focus:ring-[#0071E3]/15 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-inner-spin-button]:m-0 ${
+            prefix ? 'pl-8' : ''
+          } ${
+            suffix
+              ? suffix.length > 4
+                ? 'pr-20'
+                : suffix.length > 2
+                ? 'pr-14'
+                : 'pr-11'
+              : ''
+          } ${
             disabled
-              ? 'bg-slate-100 dark:bg-[#141721] text-slate-400 dark:text-zinc-600 cursor-not-allowed border-slate-200 dark:border-white/5'
-              : 'hover:border-slate-400 dark:hover:border-white/20'
+              ? 'bg-black/[0.03] dark:bg-white/[0.04] text-[#86868B] cursor-not-allowed border-black/[0.04] dark:border-white/[0.04]'
+              : 'hover:border-[#86868B]/50'
           }`}
         />
         {suffix && (
-          <span className="absolute right-4 text-xs sm:text-[13px] font-medium text-slate-500 dark:text-zinc-400 select-none pointer-events-none">
+          <span className="absolute right-3.5 text-[12px] font-medium text-[#86868B] select-none pointer-events-none">
             {suffix}
           </span>
         )}

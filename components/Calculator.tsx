@@ -9,7 +9,6 @@ import { useTheme } from '../hooks/useTheme';
 import { buildWhatsAppQuoteMessage, copyToClipboard } from '../services/shareService';
 
 import { CalculatorHeader } from './calculator/CalculatorHeader';
-import { ProductionModeSelector } from './calculator/ProductionModeSelector';
 import { ClientProjectSection } from './calculator/ClientProjectSection';
 import { MaterialEquipSection } from './calculator/MaterialEquipSection';
 import { TimeEnergySection } from './calculator/TimeEnergySection';
@@ -87,7 +86,7 @@ export const Calculator: React.FC = () => {
   };
 
   return (
-    <div className="studio-background min-h-screen text-slate-900 dark:text-zinc-100 transition-colors duration-200 antialiased pb-20">
+    <div className="studio-background min-h-screen text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-200 antialiased pb-20">
       {/* Top Application Header */}
       <CalculatorHeader
         state={state}
@@ -113,20 +112,14 @@ export const Calculator: React.FC = () => {
 
       {/* Main Dashboard Layout */}
       <main className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
-        {/* Production Mode Switcher */}
-        <ProductionModeSelector
-          productionMode={state.productionMode}
-          onSelectMode={setProductionMode}
-        />
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* LEFT & CENTER: Input Cards (8 Cols) */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            {/* Card 0: Dados do Cliente e Projeto */}
+            {/* Card 0: Dados do Cliente e Projeto com Modo de Produção integrado */}
             <ClientProjectSection
               clientProject={state.clientProject}
               kitBatch={state.kitBatch}
-              isKitMode={isKitMode}
+              productionMode={state.productionMode}
               isImageProcessing={isImageProcessing}
               imageInputRef={imageInputRef}
               onTriggerImageUpload={triggerImageUpload}
@@ -138,9 +131,10 @@ export const Calculator: React.FC = () => {
               onRemoveImage={() => updateClientProject({ referenceImage: null })}
               onUpdateClientProject={updateClientProject}
               onUpdateKitBatch={updateKitBatch}
+              onSelectProductionMode={setProductionMode}
             />
 
-            {/* Grid for Cards 1 & 2 */}
+            {/* Grid 1: Material e Equipamento + Mercado e Riscos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <MaterialEquipSection
                 materialEquip={state.materialEquip}
@@ -151,27 +145,27 @@ export const Calculator: React.FC = () => {
                 onSelectFilamentPreset={selectFilamentPreset}
               />
 
+              <MarketRisksSection
+                marketRisks={state.marketRisks}
+                results={results}
+                onUpdateMarketRisks={updateMarketRisks}
+              />
+            </div>
+
+            {/* Grid 2 (embaixo): Tempo e Energia + Trabalho e Extras (cards mais compactos) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TimeEnergySection
                 timeEnergy={state.timeEnergy}
                 results={results}
                 isKitMode={isKitMode}
                 onUpdateTimeEnergy={updateTimeEnergy}
               />
-            </div>
 
-            {/* Grid for Cards 3 & 4 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <WorkExtrasSection
                 workExtras={state.workExtras}
                 results={results}
                 isKitMode={isKitMode}
                 onUpdateWorkExtras={updateWorkExtras}
-              />
-
-              <MarketRisksSection
-                marketRisks={state.marketRisks}
-                results={results}
-                onUpdateMarketRisks={updateMarketRisks}
               />
             </div>
           </div>
